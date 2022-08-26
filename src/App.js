@@ -9,6 +9,8 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import TextField from '@material-ui/core/TextField';
 import { useFormik, Field } from 'formik';
 import axios from 'axios';
+import FormikController from "./components/inputcomponents"
+import { Formik, Form } from "formik"
 import * as yup from 'yup';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -31,6 +33,10 @@ const columns = [
   { field: 'email', headerName: 'Email', width: 250, type: 'number', },
   { field: 'password', headerName: 'Password', width: 250 },
 ];
+
+const choices = [
+  { key: "Terms & Conditions", value: "termsConditions" },
+]
 
 const validationSchema = yup.object({
   firstName: yup.string('Enter first name').required('first name is required'),
@@ -134,6 +140,54 @@ const App = () => {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
+
+          {/* <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values) => saveData(values)}
+          >
+            {formik => (
+              <Form onSubmit={formik.handleSubmit}>
+                <FormikController
+                  control="input"
+                  type="text"
+                  label="First Name"
+                  name="firstName"
+                />
+                <FormikController
+                  control="input"
+                  type="text"
+                  label="Last Name"
+                  name="lastName"
+                />
+                <FormikController
+                  control="input"
+                  type="email"
+                  label="Email"
+                  name="email"
+                />
+                <FormikController
+                  control="input"
+                  type="password"
+                  label="Password"
+                  name="password"
+                />
+                <FormikController
+                  control="input"
+                  type="password"
+                  label="Confirm Password"
+                  name="confirmPassword"
+                />
+                <FormikController
+                  control="checkbox"
+                  // label="Terms & Conditions"
+                  name="termsConditions"
+                  options={choices}
+                />
+              </Form>
+            )}
+          </Formik> */}
+
           <form onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
