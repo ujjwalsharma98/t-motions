@@ -15,12 +15,21 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  termsConditions: false
+}
+
 const columns = [
-  { field: 'id', headerName: 'ID', width: 160 },
-  { field: 'firstName', headerName: 'First name', width: 160 },
-  { field: 'lastName', headerName: 'Last name', width: 160 },
-  { field: 'email', headerName: 'Email', width: 160, type: 'number', },
-  { field: 'password', headerName: 'Password', width: 160 },
+  { field: 'id', headerName: 'ID', width: 250 },
+  { field: 'firstName', headerName: 'First name', width: 250 },
+  { field: 'lastName', headerName: 'Last name', width: 250 },
+  { field: 'email', headerName: 'Email', width: 250, type: 'number', },
+  { field: 'password', headerName: 'Password', width: 250 },
 ];
 
 const validationSchema = yup.object({
@@ -36,15 +45,6 @@ const validationSchema = yup.object({
     )
   })
 });
-
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  termsConditions: false
-}
 
 const style = {
   position: 'absolute',
@@ -68,7 +68,7 @@ const App = () => {
   const [alertMessage, setAlertMessage] = useState('')
 
   useEffect(() => {
-    // getContactListData()
+    getContactListData()
   }, [])
 
   const getContactListData = () => {
@@ -82,15 +82,16 @@ const App = () => {
   }
 
   const saveData = (payload) => {
-    // axios.post(`https://crudcrud.com/api/26d6d8d4113f4cbb960da2e6d00d9b66/unicorns`, payload).then((res) => {
-    //   getContactListData()
-    //   closeModal()
-    //   setAlertMessage('Added Successfully!')
-    //   openAlert()
-    // }).catch((err) => {
-    //   setAlertMessage(err.message)
-    //   openAlert()
-    // })
+    console.log("PAYLOAD >>>", payload)
+    axios.post(`https://crudcrud.com/api/26d6d8d4113f4cbb960da2e6d00d9b66/unicorns`, payload).then((res) => {
+      getContactListData()
+      closeModal()
+      setAlertMessage('Added Successfully!')
+      openAlert()
+    }).catch((err) => {
+      setAlertMessage(err.message)
+      openAlert()
+    })
   }
 
   const formik = useFormik({
@@ -118,7 +119,7 @@ const App = () => {
   }
 
   return (
-    <div style={{ height: 400, width: 800 }}>
+    <div style={{ height: 400, width: 1250 }}>
       <DataGrid
         rows={contactList}
         columns={columns}
@@ -186,8 +187,17 @@ const App = () => {
               error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
               helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
             />
+            <label>
+              <input
+                name="termsConditions"
+                type="checkbox"
+                onChange={formik.handleChange}
+                value={formik.values.termsConditions}
+              />
+              Terms & Conditions
+            </label>
 
-            <Button sx={{ mt: 2 }} color="primary" variant="contained" fullWidth type="submit">
+            <Button sx={{ mt: 2 }} color="primary" variant="contained" fullWidth type="submit" disabled={!formik.values.termsConditions}>
               Submit
             </Button>
           </form>
