@@ -65,10 +65,33 @@ const App = () => {
   const [contactList, setContactList] = useState([])
   const [modalState, setModalState] = useState(false)
   const [openToaster, setOpenToaster] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('')
 
   useEffect(() => {
-
+    // getContactListData()
   }, [])
+
+  const getContactListData = () => {
+    axios.get(`https://crudcrud.com/api/26d6d8d4113f4cbb960da2e6d00d9b66/unicorns`).then((res) => {
+      let data = res.data?.map((item) => ({ ...item, id: item._id, password: '********' }))
+      setContactList(data)
+    }).catch((err) => {
+      setAlertMessage(err.message)
+      openAlert()
+    })
+  }
+
+  const saveData = (payload) => {
+    // axios.post(`https://crudcrud.com/api/26d6d8d4113f4cbb960da2e6d00d9b66/unicorns`, payload).then((res) => {
+    //   getContactListData()
+    //   closeModal()
+    //   setAlertMessage('Added Successfully!')
+    //   openAlert()
+    // }).catch((err) => {
+    //   setAlertMessage(err.message)
+    //   openAlert()
+    // })
+  }
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -77,12 +100,6 @@ const App = () => {
       saveData(values)
     },
   });
-
-  const saveData = (payload) => {
-    axios.post(`https://crudcrud.com/api/26d6d8d4113f4cbb960da2e6d00d9b66`, payload).then((res) => {
-      console.log({res})
-    })
-  }
 
   const openModal = () => {
     setModalState(true)
@@ -178,9 +195,9 @@ const App = () => {
       </Modal>
 
       <Stack spacing={2} sx={{ width: '100%' }}>
-        <Snackbar open={openToaster} autoHideDuration={6000} onClose={() => closeAlert()}>
+        <Snackbar open={openToaster} autoHideDuration={5000} onClose={() => closeAlert()}>
           <Alert onClose={() => closeAlert()} severity="success" sx={{ width: '100%' }}>
-            Deleted Successfully!
+            {alertMessage}
           </Alert>
         </Snackbar>
       </Stack>
