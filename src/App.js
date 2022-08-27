@@ -141,6 +141,8 @@ const App = () => {
       >
         <Box sx={{ ...style, width: 400 }}>
 
+          {/* -------------- Common input boxes are also working but I'm commenting these to display input boxes with better UI -------------- */}
+          
           {/* <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
